@@ -5,7 +5,7 @@ MongoDB used for data persistence.
 #### Deployed API
 
 A version is deployed on heroku, you can find it here: 
-https://highscore-keeper.herokuapp.com/api/game
+https://highscore-keeper.herokuapp.com/
 
 
 #### Endpoints
