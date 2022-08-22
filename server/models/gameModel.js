@@ -11,10 +11,14 @@ const gameSchema = new mongoose.Schema(
       required: [true, "description is required"],
     },
     owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: [true, "owner is required"],
-    }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "owner is required"],
+    },
+    maxScore: {
+      type: Number,
+      default: Infinity,
+    },
   },
   { timestamps: true }
 );
