@@ -33,7 +33,7 @@ const getAllGames = expressAsyncHandler(async (req, res) => {
 // @access Private
 const createGame = expressAsyncHandler(async (req, res) => {
     console.log(req.user);
-  const { name, description } = req.body;
+  const { name, description, maxScore } = req.body;
   if (!name || !description) {
     res.status(400);
     throw new Error("name and description are required");
@@ -42,6 +42,7 @@ const createGame = expressAsyncHandler(async (req, res) => {
     name,
     description,
     owner: req.user._id,
+    maxScore: maxScore 
   });
   if (!game) {
     res.status(400);
