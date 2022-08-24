@@ -96,7 +96,7 @@ https://highscore-keeper.herokuapp.com/
         "token": "eyJhbGciOiJIUzIYTcwYWM3..."
     }
     ```
-- **POST** */api/highscore/:gameId (Private/Authorized)
+- **POST** */api/highscore/:gameId* (Private/Authorized)
     - creates a new highscore for the game indicated in url    
     - authorized through a Bearer token in authorization headers
     - request structure (x-www-form-encoded) should contain only the score
