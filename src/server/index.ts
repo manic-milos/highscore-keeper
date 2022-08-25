@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
+import { logger } from './config/winston';
 import errorHandler from './middleware/errorMiddleware';
 import connectDB from './config/db';
 import { routes } from './index.routes';
@@ -22,7 +23,5 @@ const error = errorHandler;
 app.use(error);
 
 app.listen(port, () => {
-  // TODO add logging
-  // eslint-disable-next-line no-console
-  console.log(`Server is running on port ${port}`);
+  logger.info(`Server is running on port ${port}`);
 });

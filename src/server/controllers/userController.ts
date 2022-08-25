@@ -1,6 +1,7 @@
 import expressAsyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import brypt from 'bcryptjs';
+import { logger } from '../config/winston';
 
 import User from '../models/userModel';
 
@@ -32,10 +33,7 @@ export const registerUser = expressAsyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
-  // TODO add logging
-
-  // eslint-disable-next-line no-console
-  console.log(newUser);
+  logger.debug(newUser);
 
   if (newUser) {
     res.status(201).json({

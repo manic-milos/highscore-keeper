@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { logger } from './winston';
 
 export const connectDB = async () => {
   try {
@@ -11,14 +12,9 @@ export const connectDB = async () => {
       // useUnifiedTopology:true
       // }
     );
-    // TODO logging
-
-    // eslint-disable-next-line no-console
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    logger.info(`MongoDB Connected: ${conn.connection.host}`);
   } catch (err) {
-    // TODO logging
-    // eslint-disable-next-line no-console
-    console.log(err);
+    logger.error(err.message);
     process.exit(1);
   }
 };
