@@ -1,13 +1,14 @@
-{
-  const router = require("express").Router();
-  const {
-    getAllHighscores,
-    createHighscore,
-  } = require("../controllers/highscoreController");
-  const { protect } = require("../middleware/authMiddleware");
+import express from 'express';
+import {
+  getAllHighscores,
+  createHighscore,
+} from '../controllers/highscoreController';
+import { protect } from '../middleware/authMiddleware';
 
-  router.get("/:gameId", getAllHighscores);
-  router.post("/:gameId", protect, createHighscore);
+const router = express.Router();
 
-  module.exports = router; 
-}
+router.get('/:gameId', getAllHighscores);
+router.post('/:gameId', protect, createHighscore);
+
+export { router };
+export default router;

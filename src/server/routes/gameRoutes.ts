@@ -1,16 +1,17 @@
-{
-  const {
-    getAllGames,
-    getGameInfo,
-    createGame,
-  } = require("../controllers/gameController");
-  const { protect } = require("../middleware/authMiddleware");
+import express from 'express';
+import { protect } from '../middleware/authMiddleware';
 
-  const router = require("express").Router();
+import {
+  getAllGames,
+  getGameInfo,
+  createGame,
+} from '../controllers/gameController';
 
-  router.get("/", getAllGames);
-  router.post("/", protect, createGame);
-  router.get("/:id", getGameInfo);
+const router = express.Router();
 
-  module.exports = router;
-}
+router.get('/', getAllGames);
+router.post('/', protect, createGame);
+router.get('/:id', getGameInfo);
+
+export { router };
+export default router;

@@ -1,25 +1,23 @@
-{
-  const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
-  const highscoreSchema = new mongoose.Schema(
-    {
-      score: {
-        type: Number,
-        required: [true, "score is required"],
-      },
-      game: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Game",
-        required: [true, "game is required"],
-      },
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: [true, "user is required"],
-      },
+const highscoreSchema = new mongoose.Schema(
+  {
+    score: {
+      type: Number,
+      required: [true, 'score is required'],
     },
-    { timestamps: true }
-  );
+    game: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Game',
+      required: [true, 'game is required'],
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'user is required'],
+    },
+  },
+  { timestamps: true },
+);
 
-  module.exports = mongoose.model("Highscore", highscoreSchema);
-}
+export default mongoose.model('Highscore', highscoreSchema);

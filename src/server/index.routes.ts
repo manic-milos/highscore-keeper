@@ -1,13 +1,14 @@
-{
-  const router = require("express").Router();
+import { Router } from 'express';
+import { router as userRoutes } from './routes/userRoutes';
+import { router as gameRoutes } from './routes/gameRoutes';
+import { router as highscoreRoutes } from './routes/highscoreRoutes';
 
-  router.use("/user", require("./routes/userRoutes"));
-  router.use("/game", require("./routes/gameRoutes"));
-  router.use("/highscore", require("./routes/highscoreRoutes"));
+export const routes = Router();
 
-  router.use("/version", (_, res) => {
-    return res.json({ version: "1.0.0" });
-  });
+routes.use('/user', userRoutes);
+routes.use('/game', gameRoutes);
+routes.use('/highscore', highscoreRoutes);
 
-  module.exports = router;
-}
+routes.use('/version', (_, res) => res.json({ version: '1.0.0' }));
+
+export default routes;
