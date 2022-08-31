@@ -1,11 +1,12 @@
 import expressAsyncHandler from 'express-async-handler';
 
-import Game from '../models/gameModel';
+import Game, { gameCreate } from '../models/gameModel';
 
 // @desc get info for a game
 // @route GET /api/games/:id
 // @access Public
 export const getGameInfo = expressAsyncHandler(async (req: any, res) => {
+  // TODO validate id
   const game = await Game.findById(req.params.id);
   if (!game) {
     res.status(400);
@@ -17,7 +18,7 @@ export const getGameInfo = expressAsyncHandler(async (req: any, res) => {
 // @desc get all games
 // @route GET /api/games/
 // @access Public
-export const getAllGames = expressAsyncHandler(async (req, res) => {
+export const getAllGames = expressAsyncHandler(async (_, res) => {
   const games = await Game.find();
   if (!games) {
     res.status(400);
@@ -35,12 +36,7 @@ export const createGame = expressAsyncHandler(async (req: any, res) => {
     res.status(400);
     throw new Error('name and description are required');
   }
-  const game = await Game.create({
-    name,
-    description,
-    owner: req.user._id,
-    maxScore,
-  });
+  const game = await gameCreate(name, description, req.user._id, maxScore);
   if (!game) {
     res.status(400);
     throw new Error('Game not created');
@@ -48,4 +44,31 @@ export const createGame = expressAsyncHandler(async (req: any, res) => {
   res.status(201).json(game);
 });
 
-export default { getGameInfo, getAllGames, createGame };
+// @desc update a game
+// @route PUT /api/games/:id
+// @access Private
+export const updateGame = expressAsyncHandler(async (req: any, res) => {
+  const { id } = req.params;
+  const { name, description, maxScore } = req.body;
+  if (!name || !description) {
+    res.status(400);
+    throw new Error('name and description are required');
+  }
+  const game = await Game.findByIdAndUpdate(id, {
+    name,
+    description,
+    maxScore,
+  });
+  if (!game) {
+    res.status(400);
+    throw new Error('Game not found');
+  }
+  res.status(200).json(game);
+});
+
+export default {
+  getGameInfo,
+  getAllGames,
+  createGame,
+  updateGame,
+};

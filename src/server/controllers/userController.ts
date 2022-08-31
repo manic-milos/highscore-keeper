@@ -5,7 +5,8 @@ import { logger } from '../config/winston';
 
 import User from '../models/userModel';
 
-const generateToken = (id: any) => jwt.sign({ _id: id }, process.env.JWT_SECRET, {
+// TODO move this elsewhere
+export const generateToken = (id: any) => jwt.sign({ _id: id }, process.env.JWT_SECRET, {
   expiresIn: '1h',
 });
 

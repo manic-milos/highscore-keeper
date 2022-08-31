@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, ObjectId } from 'mongoose';
 
 const gameSchema = new Schema(
   {
@@ -23,4 +23,18 @@ const gameSchema = new Schema(
   { timestamps: true },
 );
 
-export default model('Game', gameSchema);
+const Game = model('Game', gameSchema);
+
+export const gameCreate = async (
+  name: string,
+  description: string,
+  owner: ObjectId,
+  maxScore: number,
+) => Game.create({
+  name,
+  description,
+  owner,
+  maxScore,
+});
+
+export default Game;
