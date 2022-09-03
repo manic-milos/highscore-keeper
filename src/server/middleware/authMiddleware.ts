@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/userModel';
+import logger from '../config/winston';
 
 export interface RequestAuth extends Request {
   user?: any;
@@ -31,6 +32,7 @@ export const protect = asyncHandler(
     const user = await User.findById(id).select('-password');
     if (!user) {
       res.status(401);
+      logger.error(`User not found, id: ${id}`);
       throw new Error('User not found');
     }
     req.user = user;

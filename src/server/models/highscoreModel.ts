@@ -1,17 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
-const highscoreSchema = new mongoose.Schema(
+export interface IHighscore {
+  _id: Types.ObjectId;
+  gameId: Types.ObjectId;
+  userId: Types.ObjectId;
+  score: number;
+}
+
+const highscoreSchema = new mongoose.Schema<IHighscore>(
   {
     score: {
       type: Number,
       required: [true, 'score is required'],
     },
-    game: {
+    gameId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Game',
       required: [true, 'game is required'],
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'user is required'],
@@ -19,5 +26,7 @@ const highscoreSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+export * from './modelmethods/highscoreCRUD';
 
 export default mongoose.model('Highscore', highscoreSchema);

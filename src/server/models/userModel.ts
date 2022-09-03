@@ -1,4 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
+
+export interface IUser{
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
+  password: string;
+}
 
 const userSchema = new mongoose.Schema(
   {
@@ -22,4 +29,8 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-export default mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+
+export default User;
+
+export * from './modelmethods/userCRUD';

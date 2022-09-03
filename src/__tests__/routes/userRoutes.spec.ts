@@ -4,22 +4,21 @@ import chaiHttp from 'chai-http';
 import setEnvBeforeTests from '../setEnvBeforeTests';
 
 import app from '../../server';
-import userModel from '../../server/models/userModel';
+import { createUser } from '../../server/models/userModel';
 
 chai.should();
 chai.use(chaiHttp);
 setEnvBeforeTests();
 
 before(async () => {
-  // delete everything in users before we start testing
-  await userModel.deleteMany({});
+  await createUser('user', 'user@login.com', 'login');
 });
 
 const user = { userId: '', token: '' };
 // TODO comments for what is being tested in assertions
 describe('User routes', () => {
   describe('POST /api/user', () => {
-    it('should create a user', (done) => {
+    it('should create a user and return it with a code 201', (done) => {
       chai
         .request(app)
         .post('/api/user')
@@ -36,7 +35,7 @@ describe('User routes', () => {
         })
         .catch((err) => done(err));
     });
-    it('should return an error if no name is provided', (done) => {
+    it('should return an error(400) if no name is provided', (done) => {
       chai
         .request(app)
         .post('/api/user')
@@ -51,7 +50,7 @@ describe('User routes', () => {
         })
         .catch((err) => done(err));
     });
-    it('should return an error if no email is provided', (done) => {
+    it('should return an error(400) if no email is provided', (done) => {
       chai
         .request(app)
         .post('/api/user')
@@ -66,13 +65,27 @@ describe('User routes', () => {
         })
         .catch((err) => done(err));
     });
-    it('should return an error if no password is provided', (done) => {
+    it('should return an error(400) if no password is provided', (done) => {
       chai
         .request(app)
         .post('/api/user')
         .send({
           name: 'test',
           email: 'test@test.com',
+        })
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          done();
+        })
+        .catch((err) => done(err));
+    }); it('should return an error(400) if already exists(400)', (done) => {
+      chai
+        .request(app)
+        .post('/api/user')
+        .send({
+          email: 'test@test.com',
+          password: 'test',
         })
         .then((res) => {
           res.should.have.status(400);
@@ -88,8 +101,8 @@ describe('User routes', () => {
         .request(app)
         .post('/api/user/auth')
         .send({
-          email: 'test@test.com',
-          password: 'test',
+          email: 'login@login.com',
+          password: 'login',
         })
         .then((res) => {
           res.should.have.status(200);
@@ -129,5 +142,4 @@ describe('User routes', () => {
     });
   });
 });
-export { user };
 export default chai;

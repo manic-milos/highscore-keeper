@@ -5,7 +5,7 @@
   "main": "src/server/index.js",
   "scripts": {
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --exit -r  ts-node/register './src/**/*.spec.ts'",
-    "test-env": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --exit -r  ts-node/register './src/__tests__/**/*'",
+    "test-env": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --exit --bail -r  ts-node/register './src/__tests__/**/*'",
     "start": "node ./dist/server/index.js",
     "tsc": "tsc",
     "postinstall": "npm run tsc",

@@ -1,6 +1,6 @@
 import expressAsyncHandler from 'express-async-handler';
 
-import Game, { gameCreate } from '../models/gameModel';
+import Game, { gameCreate, gameUpdate } from '../models/gameModel';
 
 // @desc get info for a game
 // @route GET /api/games/:id
@@ -20,10 +20,6 @@ export const getGameInfo = expressAsyncHandler(async (req: any, res) => {
 // @access Public
 export const getAllGames = expressAsyncHandler(async (_, res) => {
   const games = await Game.find();
-  if (!games) {
-    res.status(400);
-    throw new Error('Games not found');
-  }
   res.status(200).json(games);
 });
 
@@ -36,7 +32,12 @@ export const createGame = expressAsyncHandler(async (req: any, res) => {
     res.status(400);
     throw new Error('name and description are required');
   }
-  const game = await gameCreate(name, description, req.user._id, maxScore);
+  const game = await gameCreate({
+    name,
+    description,
+    ownerId: req.user._id,
+    maxScore,
+  });
   if (!game) {
     res.status(400);
     throw new Error('Game not created');
@@ -54,14 +55,10 @@ export const updateGame = expressAsyncHandler(async (req: any, res) => {
     res.status(400);
     throw new Error('name and description are required');
   }
-  const game = await Game.findByIdAndUpdate(id, {
-    name,
-    description,
-    maxScore,
-  });
+  const game = await gameUpdate(id, name, description, maxScore);
   if (!game) {
-    res.status(400);
-    throw new Error('Game not found');
+    res.status(404);
+    throw new Error('Game not found!');
   }
   res.status(200).json(game);
 });

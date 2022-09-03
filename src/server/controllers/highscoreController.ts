@@ -2,7 +2,7 @@ import expressAsyncHandler from 'express-async-handler';
 // import jwt from 'jsonwebtoken';
 // import brypt from 'bcryptjs';
 
-import HighScore from '../models/highscoreModel';
+import { getAllFromGame, createHighscore as createAHighscore } from '../models/highscoreModel';
 
 // @desc get all highscores
 // @route GET /api/highscores/
@@ -14,7 +14,7 @@ export const getAllHighscores = expressAsyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('gameId is required');
   }
-  const highscores = await HighScore.find({ game: gameId });
+  const highscores = await getAllFromGame(gameId);
   if (!highscores) {
     res.status(400);
     throw new Error('Highscores not found');
@@ -34,11 +34,7 @@ export const createHighscore = expressAsyncHandler(async (req : any, res) => {
     res.status(400);
     throw new Error('gameId and score are required');
   }
-  const highscore = await HighScore.create({
-    game: gameId,
-    score,
-    user: req.user._id,
-  });
+  const highscore = await createAHighscore(gameId, score, req.user._id);
   if (!highscore) {
     res.status(400);
     throw new Error('Highscore not created');

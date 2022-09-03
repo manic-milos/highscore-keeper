@@ -1,6 +1,14 @@
-import { Schema, model, ObjectId } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 
-const gameSchema = new Schema(
+export interface IGame {
+  _id: string;
+  name: string;
+  description: string;
+  ownerId: Types.ObjectId;
+  maxScore: number;
+}
+
+const gameSchema = new Schema<IGame>(
   {
     name: {
       type: String,
@@ -10,7 +18,7 @@ const gameSchema = new Schema(
       type: String,
       required: [true, 'description is required'],
     },
-    owner: {
+    ownerId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'owner is required'],
@@ -23,18 +31,8 @@ const gameSchema = new Schema(
   { timestamps: true },
 );
 
-const Game = model('Game', gameSchema);
+const Game = model<IGame>('Game', gameSchema);
 
-export const gameCreate = async (
-  name: string,
-  description: string,
-  owner: ObjectId,
-  maxScore: number,
-) => Game.create({
-  name,
-  description,
-  owner,
-  maxScore,
-});
+export * from './modelmethods/gameCRUD';
 
 export default Game;
